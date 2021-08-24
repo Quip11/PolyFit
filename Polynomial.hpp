@@ -41,6 +41,12 @@ private:
     std::vector<std::size_t> P;             // permutator
 };
 
+/* Polynomial(length)
+ *
+ * Constructor.  The length parameter is the number of coefficients; i.e. the
+ * order of the polynomial plus 1.  Allocates all the memory needed for
+ * subsequent calls to fit().
+ */
 template<typename Scalar> Polynomial<Scalar>::Polynomial(std::size_t _length)
 :   A(_length), B(_length), C(_length), S(_length), P(_length)
 {
