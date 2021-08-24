@@ -3,12 +3,7 @@
 
 #include <vector>
 
-/*
- * Copyright (©) 1995 Dennis Flaherty <dennisf@denix.us>
- *
- * Description:
- *      
- * Polynomial fit and value routines.  Uses Least-Squares to find a
+/* Polynomial fit and value routines.  Uses Least-Squares to find a
  * fit for a data set, pivoting rows of the matrix for best accuracy.
  * Other methods: return the polynomial's value at a point on the independent
  * axis with the least number of multiplications, and return the mean squared-
