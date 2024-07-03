@@ -48,35 +48,35 @@ void EXPECT_FLOAT_VECTOR_EQ(const std::vector<float>& x,
 
     for (std::size_t i = 0; i < x.size(); ++i)
     {
+        // The usual EXPECT_FLOAT_EQ() wasn't sloppy enough.
         EXPECT_NEAR(x[i], y[i], std::abs(x[i] * .000001));
     }
 }
 
 /**
- * EXPECT_FLOAT_POLY_VECTOR_EQ(P, V)
- *
- * Returns true if the coefficient vector of polynomial P is approximately
- * equal to vector V.
- */
-void EXPECT_FLOAT_POLY_VECTOR_EQ(const Polynomial<float>& p,
-        const std::vector<float>& v)
-{
-    EXPECT_FLOAT_VECTOR_EQ(static_cast<const std::vector<float>&>(p), v);
-}
-
-/**
  * The unit tests.
  */
-TEST(PolyFit, FitQuadratic)
+
+class PolynomialTest: public testing::Test, public Polynomial<float>
+{
+protected:
+    // Default constructor implicitly called below by derived fixture classes.
+    PolynomialTest()    : Polynomial<float>(3)  {}
+
+    // Give all fixture classes direct access to C.
+    using Polynomial<float>::C;
+};
+
+TEST_F(PolynomialTest, FitQuadratic)
 {
     // Test 1: a polynomial fit for a quadratic.
     std::vector<float> X = { 0, 1, 2, 3 };
     std::vector<float> Y = { 2.1, 0.7, -0.1, 1.3 };
-    Polynomial<float> p(3);
-    p.fit(X, Y);
-    std::vector<float> Cexp = { 2.18, -2.42, 0.7 };
 
-    EXPECT_FLOAT_POLY_VECTOR_EQ(p, Cexp);
+    fit(X, Y);
+
+    std::vector<float> Cexp = { 2.18, -2.42, 0.7 };
+    EXPECT_FLOAT_VECTOR_EQ(C, Cexp);
 }
 
 TEST(PolyFit, Value)

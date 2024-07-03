@@ -25,6 +25,8 @@ public:
     operator const std::vector<Scalar>&() const     { return C; }
 
 private:
+    friend class PolynomialTest;
+
     void _solve(void);
     Scalar _ipow(Scalar x, std::size_t n) const;
     Scalar _fabs(Scalar x) const    { return x >= 0 ? x : -x; }
