@@ -1,4 +1,4 @@
-LIBS= -lm -lstdc++
+LIBS= -lgtest -lm -lstdc++
 CC= gcc
 CFLAGS= -O2 -Wall
 CXX= g++
