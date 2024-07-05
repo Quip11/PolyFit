@@ -12,7 +12,10 @@
 /**
  * operator<<
  *
- * Used for printing vectors and polynomials.
+ * @brief Used for printing vectors and polynomials.
+ * @param os - std::ostream to insert.
+ * @param v - arbitrary vector whose elements are to be inserted.
+ * @return std::ostream to continue.
  */
 template<typename T> std::ostream& operator<<(std::ostream& os,
         const std::vector<T>& v)
@@ -39,7 +42,7 @@ template<typename T> std::ostream& operator<<(std::ostream& os,
 /**
  * EXPECT_FLOAT_VECTOR_EQ(X, Y)
  *
- * Returns true if vectors X and Y are approximately equal.
+ * @brief Verifies that vectors X and Y are approximately equal.
  */
 void EXPECT_FLOAT_VECTOR_EQ(const std::vector<float>& x,
         const std::vector<float>& y)
@@ -57,13 +60,26 @@ void EXPECT_FLOAT_VECTOR_EQ(const std::vector<float>& x,
  * The unit tests.
  */
 
+/**
+ * PolynomialTest
+ *
+ * @brief This is a test fixture class, used for tests below.  PolynomialTest
+ * is declared as a fried to the Polynomial<> class that's under test so that
+ * it has access to private members for testing.
+ *
+ * All tests using PolynomialTest as a fixture get derived Test classes, so
+ * that their test bodies are run as class methods.  The using statements in
+ * this declaration promote private members to protected so that these Test
+ * classes have access too.
+ */
 class PolynomialTest: public testing::Test, public Polynomial<float>
 {
 protected:
-    // Default constructor implicitly called below by derived fixture classes.
+    // Derived-class TEST_F's implicitly call their default constructors.
+    // This provides a useful one for testing.
     PolynomialTest()    : Polynomial<float>(3)  {}
 
-    // Give all fixture classes direct access to C.
+    // Give all fixture derived classes direct access to C.
     using Polynomial<float>::C;
 };
 
@@ -73,12 +89,17 @@ TEST_F(PolynomialTest, FitQuadratic)
     std::vector<float> X = { 0, 1, 2, 3 };
     std::vector<float> Y = { 2.1, 0.7, -0.1, 1.3 };
 
+    // Call the local fit().
     fit(X, Y);
 
     std::vector<float> Cexp = { 2.18, -2.42, 0.7 };
+    // Direct access to C.
     EXPECT_FLOAT_VECTOR_EQ(C, Cexp);
 }
 
+/**
+ * Ordinary TEST without a fixture.
+ */
 TEST(PolyFit, Value)
 {
     std::vector<float> X = { 0, 1, 2, 3 };

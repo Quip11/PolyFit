@@ -3,7 +3,8 @@
 
 #include <vector>
 
-/* Polynomial fit and value routines.  Uses Least-Squares to find a
+/**
+ * @brief Polynomial fit and value routines.  Uses Least-Squares to find a
  * fit for a data set, pivoting rows of the matrix for best accuracy.
  * Other methods: return the polynomial's value at a point on the independent
  * axis with the least number of multiplications, and return the mean squared-
@@ -38,11 +39,13 @@ private:
     std::vector<std::size_t> P;             // permutator
 };
 
-/* Polynomial(length)
+/**
+ * Polynomial
  *
- * Constructor.  The length parameter is the number of coefficients; i.e. the
- * order of the polynomial plus 1.  Allocates all the memory needed for
- * subsequent calls to fit().
+ * @brief Constructor.
+ *
+ * @param length - the number of coefficients; i.e. the order of the polynomial
+ * plus 1.  Allocates all the memory needed for subsequent calls to fit().
  */
 template<typename Scalar> Polynomial<Scalar>::Polynomial(std::size_t _length)
 :   A(_length), B(_length), C(_length), S(_length), P(_length)
@@ -51,12 +54,14 @@ template<typename Scalar> Polynomial<Scalar>::Polynomial(std::size_t _length)
         row.reserve(_length);
 }
 
-/* fit(X, Y)
+/**
+ * fit
  *
- * Find coefficients of a polynomial which best fits a data set.
- * Vectors X and Y specify the (x,y) coordinates of the data set to
- * be fit.  The polynomial solution will be written to C,
- * where C[0] is the constant coefficient.
+ * @brief Find coefficients of a polynomial which best fits a data set.
+ *
+ * @param X and Y - Vectors to specify the (x,y) coordinates of the data set to
+ * be fit.  The polynomial solution will be written to C, where C[0] is the
+ * constant coefficient.
  */
 template<typename Scalar> void Polynomial<Scalar>::fit(
         const std::vector<Scalar>& X, const std::vector<Scalar>& Y)
@@ -82,9 +87,10 @@ template<typename Scalar> void Polynomial<Scalar>::fit(
     _solve();
 }
 
-/* _solve()
+/**
+ * _solve
  *
- * Linear equations to solve polynomial fits are notoriously unbalanced.
+ * @brief Linear equations to solve polynomial fits are notoriously unbalanced.
  * This solve() ranks each row and uses the ranks in the LU decomposition.
  * The results are stored in vector C.
  */
@@ -134,9 +140,15 @@ template<typename Scalar> void Polynomial<Scalar>::_solve(void)
     }
 }
 
-/* Scalar _ipow(Scalar x, int n)
+/**
+ * _ipow
  *
- * Returns x to the nth power.
+ * @brief Calculates x to the nth power.
+ *
+ * @param x - scalar base
+ * @param n - integral exponent
+ *
+ * @return - Scalar x to the nth power.
  */
 template<typename Scalar> Scalar Polynomial<Scalar>::_ipow(Scalar x,
         std::size_t n) const
@@ -149,9 +161,13 @@ template<typename Scalar> Scalar Polynomial<Scalar>::_ipow(Scalar x,
     return r;
 }
 
-/* Scalar value(Scalar x)
+/**
+ * value
  *
- * Efficiently computes C(x)
+ * @brief Efficiently computes C(x).
+ *
+ * @param x - independent variable.
+ * @return Scalar C(x).
  */
 template<typename Scalar> Scalar Polynomial<Scalar>::value(Scalar x) const
 {
@@ -164,10 +180,14 @@ template<typename Scalar> Scalar Polynomial<Scalar>::value(Scalar x) const
     return r;
 }
 
-/* Scalar mse(X, Y)
+/**
+ * mse
  *
- * Computes the Mean Squared-Error over data points (X, Y).  The MSE is
+ * @brief Computes the Mean Squared-Error over data points (X, Y).  The MSE is
  * defined over the remaining dimensions.
+ *
+ * @param X, Y - Vectors of data points (x, y) to compute MSE over.
+ * @return - Scalar MSE.
  */
 template<typename Scalar> Scalar Polynomial<Scalar>::mse(
         const std::vector<Scalar>& X, const std::vector<Scalar>& Y) const
